@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <SFML/Graphics.hpp>
 #include "Utility.h"
 
 class Snake;
@@ -16,4 +17,6 @@ public:
 	Food(Pos pos);
 	Pos getPos() const { return _pos; }
 	void printBody();
+
+	void render(sf::RenderWindow& window);
 };

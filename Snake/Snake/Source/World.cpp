@@ -48,6 +48,16 @@ bool World::update(int inputDir)
 	return true;
 }
 
+void World::render(sf::RenderWindow& window)
+{
+	_snake.render(window);
+
+	for (int i = 0; i < _foods.size(); ++i)
+	{
+		_foods[i].render(window);
+	}
+}
+
 void World::genFood()
 {
 	if (rand() % 10 == 0)

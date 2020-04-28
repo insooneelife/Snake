@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <SFML/Graphics.hpp>
 #include "Snake.h"
 #include "Food.h"
 
@@ -20,6 +21,8 @@ public:
 	void printBoard();
 
 	bool update(int inputDir);
+
+	void render(sf::RenderWindow& window);
 
 	void genFood();
 

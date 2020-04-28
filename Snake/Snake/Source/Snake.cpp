@@ -104,3 +104,20 @@ bool Snake::checkDead()
 
 	return false;
 }
+
+void Snake::render(sf::RenderWindow& window)
+{
+	int MoveScale = 20;
+
+	for (int i = 0; i < getBodySize(); ++i)
+	{
+		Pos pos = _bodies[i];
+		//Utility::printStringOnPos(_shape, pos);
+
+		sf::CircleShape shape(10.f);
+		shape.setFillColor(sf::Color::Black);
+		shape.setPosition(sf::Vector2f(pos.x * MoveScale, pos.y * MoveScale));
+
+		window.draw(shape);
+	}
+}

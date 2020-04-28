@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <SFML/Graphics.hpp>
 #include "Utility.h"
 
 class Food;
@@ -31,4 +32,7 @@ public:
 	void eatFoot(std::vector<Food>& foods);
 
 	bool checkDead();
+
+
+	void render(sf::RenderWindow& window);
 };
