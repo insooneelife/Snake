@@ -3,19 +3,21 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "Utility.h"
+#include "Globals.h"
 
 class Snake;
 
 class Food
 {
 private:
-	Pos _pos;
-	std::string _shape;
+	sf::Vector2f _pos;
+	std::string _cshape;
+	sf::CircleShape _shape;
 
 public:
 
-	Food(Pos pos);
-	Pos getPos() const { return _pos; }
+	Food(sf::Vector2f pos);
+	sf::Vector2f getPos() const { return _pos; }
 	void printBody();
 
 	void render(sf::RenderWindow& window);

@@ -1,43 +1,49 @@
 #include "Snake.h"
 #include "Food.h"
+#include "Globals.h"
+
+typedef sf::Vector2f Vec;
 
 void Snake::init(int startX, int startY)
 {
 	// 벽을 뚫을 위험이 있음
-	_bodies.push_back(Pos(startX, startY));
-	_bodies.push_back(Pos(startX, startY + 1));
-	_bodies.push_back(Pos(startX, startY + 2));
-	_bodies.push_back(Pos(startX, startY + 3));
+	_bodies.push_back(Vec(startX, startY));
+	_bodies.push_back(Vec(startX, startY + 1));
+	_bodies.push_back(Vec(startX, startY + 2));
+	_bodies.push_back(Vec(startX, startY + 3));
 
 	int r = rand();
 	if (r % 2 == 0)
 	{
-		_shape = "■";
+		_cshape = "■";
 	}
 	else if (r % 2 == 1)
 	{
-		_shape = "◆";
+		_cshape = "◆";
 	}
+
+	_shape.setRadius(10.0f);
+	_shape.setFillColor(sf::Color::Black);
 }
 
 void Snake::printBodies()
 {
 	for (int i = 0; i < getBodySize(); ++i)
 	{
-		Pos pos = _bodies[i];
-		Utility::printStringOnPos(_shape, pos);
+		Vec pos = _bodies[i];
+		Utility::printStringOnPos(_cshape, pos);
 	}
 }
 
 void Snake::moveBodies(int direction)
 {
-	if (oppositeDir[direction] == getDirection())
+	if (Globals::oppositeDir[direction] == getDirection())
 	{
 		// read
 		direction = getDirection();
 	}
 
-	Pos tailPos = getBody(getBodySize() - 1);
+	Vec tailPos = getBody(getBodySize() - 1);
 	Utility::printStringOnPos("  ", tailPos);
 
 	for (int i = getBodySize() - 1; i >= 1; --i)
@@ -46,15 +52,15 @@ void Snake::moveBodies(int direction)
 	}
 
 	setDirection(direction);
-	Pos curPos = getBody(0);
-	int x = curPos.x + moveXY[getDirection()].x;
-	int y = curPos.y + moveXY[getDirection()].y;
-	setBody(0, Pos(x, y));
+	Vec curPos = getBody(0);
+	int x = curPos.x + Globals::moveXY[getDirection()].x;
+	int y = curPos.y + Globals::moveXY[getDirection()].y;
+	setBody(0, Vec(x, y));
 }
 
 void Snake::eatFoot(std::vector<Food>& foods)
 {
-	Pos head = getBody(0);
+	Vec head = getBody(0);
 
 	int tryNum = foods.size();
 
@@ -63,7 +69,7 @@ void Snake::eatFoot(std::vector<Food>& foods)
 		int foodIdx = -1;
 		for (int i = 0; i < foods.size(); ++i)
 		{
-			Pos foodPos = foods[i].getPos();
+			Vec foodPos = foods[i].getPos();
 			if (head.x == foodPos.x && head.y == foodPos.y)
 			{
 				foodIdx = i;
@@ -84,18 +90,18 @@ void Snake::eatFoot(std::vector<Food>& foods)
 
 bool Snake::checkDead()
 {
-	Pos curPos = getBody(0);
+	Vec curPos = getBody(0);
 	int x = curPos.x;
 	int y = curPos.y;
 
-	if (y == 0 || x == 0 || y == H - 1 || x == W - 1)
+	if (y == 0 || x == 0 || y == Globals::H - 1 || x == Globals::W - 1)
 	{
 		return true;
 	}
 
 	for (int i = 1; i < getBodySize(); ++i)
 	{
-		Pos body = getBody(i);
+		Vec body = getBody(i);
 		if (body.x == curPos.x && body.y == curPos.y)
 		{
 			return true;
@@ -111,13 +117,10 @@ void Snake::render(sf::RenderWindow& window)
 
 	for (int i = 0; i < getBodySize(); ++i)
 	{
-		Pos pos = _bodies[i];
-		//Utility::printStringOnPos(_shape, pos);
+		Vec pos = _bodies[i];
+		
+		_shape.setPosition(pos * (float)MoveScale);
 
-		sf::CircleShape shape(10.f);
-		shape.setFillColor(sf::Color::Black);
-		shape.setPosition(sf::Vector2f(pos.x * MoveScale, pos.y * MoveScale));
-
-		window.draw(shape);
+		window.draw(_shape);
 	}
 }

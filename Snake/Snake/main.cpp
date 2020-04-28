@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <ctime>
+#include "Globals.h"
 #include "World.h"
 #include <SFML/Graphics.hpp>
 
@@ -33,19 +34,19 @@ int main()
 		int inputDir = -1;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
-			inputDir = Left;
+			inputDir = Globals::Left;
 		}
 		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			inputDir = Right;
+			inputDir = Globals::Right;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			inputDir = Up;
+			inputDir = Globals::Up;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			inputDir = Down;
+			inputDir = Globals::Down;
 		}
 
 		if (!world.update(inputDir))

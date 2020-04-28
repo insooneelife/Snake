@@ -15,7 +15,7 @@ public:
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), posXY);
 	}
 
-	static void printStringOnPos(std::string part, Pos pos)
+	static void printStringOnPos(std::string part, sf::Vector2f pos)
 	{
 		gotoxy(pos.x * 2, pos.y);
 		std::cout << part;

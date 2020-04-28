@@ -127,12 +127,14 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Source\Food.cpp" />
+    <ClCompile Include="Source\Globals.cpp" />
     <ClCompile Include="Source\Snake.cpp" />
     <ClCompile Include="Source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Data.h" />
     <ClInclude Include="Header\Food.h" />
+    <ClInclude Include="Header\Globals.h" />
     <ClInclude Include="Header\Snake.h" />
     <ClInclude Include="Header\Utility.h" />
     <ClInclude Include="Header\World.h" />

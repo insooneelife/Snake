@@ -1,5 +1,6 @@
 #include "World.h"
 
+using namespace sf;
 
 void World::init()
 {
@@ -10,11 +11,11 @@ void World::init()
 
 void World::printBoard()
 {
-	for (int y = 0; y < H; ++y)
+	for (int y = 0; y < Globals::H; ++y)
 	{
-		for (int x = 0; x < W; ++x)
+		for (int x = 0; x < Globals::W; ++x)
 		{
-			if (y == 0 || x == 0 || y == H - 1 || x == W - 1)
+			if (y == 0 || x == 0 || y == Globals::H - 1 || x == Globals::W - 1)
 				std::cout << "бр";
 			else
 				std::cout << "  ";
@@ -48,7 +49,7 @@ bool World::update(int inputDir)
 	return true;
 }
 
-void World::render(sf::RenderWindow& window)
+void World::render(RenderWindow& window)
 {
 	_snake.render(window);
 
@@ -62,10 +63,10 @@ void World::genFood()
 {
 	if (rand() % 10 == 0)
 	{
-		int x = rand() % (W - 2) + 1;
-		int y = rand() % (H - 2) + 1;
+		int x = rand() % (Globals::W - 2) + 1;
+		int y = rand() % (Globals::H - 2) + 1;
 
-		Food food(Pos(x, y));
+		Food food(Vector2f(x, y));
 		_foods.push_back(food);
 	}
 }
