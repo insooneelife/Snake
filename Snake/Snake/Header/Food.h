@@ -11,14 +11,13 @@ class Food
 {
 private:
 	sf::Vector2f _pos;
-	std::string _cshape;
 	sf::CircleShape _shape;
 
 public:
 
 	Food(sf::Vector2f pos);
 	sf::Vector2f getPos() const { return _pos; }
-	void printBody();
+	const sf::CircleShape& getShape() const { return _shape; }
 
 	void render(sf::RenderWindow& window);
 };

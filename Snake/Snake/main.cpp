@@ -12,8 +12,9 @@ using namespace std;
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(640, 640), "SFML works!");
-	
+	sf::RenderWindow window(sf::VideoMode(960, 640), "SFML works!");
+	sf::View view(sf::FloatRect(0.f, 0.f, 960.f, 640.f));
+	window.setView(view);
 
 	srand((unsigned int)time(0));
 	World world;
@@ -31,37 +32,42 @@ int main()
 		}
 
 
-		int inputDir = -1;
+		sf::Vector2f inputDir;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
-			inputDir = Globals::Left;
+			inputDir += sf::Vector2f(-1, 0);
 		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			inputDir = Globals::Right;
+			inputDir += sf::Vector2f(1, 0);
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			inputDir = Globals::Up;
+			inputDir += sf::Vector2f(0, -1);
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			inputDir = Globals::Down;
+			inputDir += sf::Vector2f(0, 1);
 		}
+
+		inputDir = Utility::getVectorSafeNorm(inputDir);
 
 		if (!world.update(inputDir))
 		{
 			break;
 		}
-
+		
 
 		window.clear(sf::Color::White);
 
+		view.setCenter(world.getTargetViewPos());
+		window.setView(view);
 		world.render(window);
 
+		
 		window.display();
 
-		Sleep(50);
+		Sleep(5);
 	}
 
 	return 0;

@@ -5,10 +5,6 @@
 class Globals
 {
 public:
-	constexpr static float MoveScale = 20;
-
-	constexpr static int W = 30;
-	constexpr static int H = 50;
 	enum
 	{
 		Left, Right, Up, Down
@@ -16,4 +12,6 @@ public:
 
 	const static sf::Vector2f moveXY[4];
 	const static int oppositeDir[4];
+
+	constexpr static float PI = 3.14159265358979323846f;
 };

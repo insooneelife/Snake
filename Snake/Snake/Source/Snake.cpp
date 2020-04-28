@@ -6,45 +6,20 @@ typedef sf::Vector2f Vec;
 
 void Snake::init(int startX, int startY)
 {
-	// 벽을 뚫을 위험이 있음
+	_direction = sf::Vector2f(1, 0);
+
 	_bodies.push_back(Vec(startX, startY));
-	_bodies.push_back(Vec(startX, startY + 1));
-	_bodies.push_back(Vec(startX, startY + 2));
-	_bodies.push_back(Vec(startX, startY + 3));
+	_bodies.push_back(Vec(startX, startY + 10));
+	_bodies.push_back(Vec(startX, startY + 20));
+	_bodies.push_back(Vec(startX, startY + 30));
 
-	int r = rand();
-	if (r % 2 == 0)
-	{
-		_cshape = "■";
-	}
-	else if (r % 2 == 1)
-	{
-		_cshape = "◆";
-	}
-
-	_shape.setRadius(10.0f);
+	Utility::setCircle(_shape, 10.0f);
 	_shape.setFillColor(sf::Color::Black);
 }
 
-void Snake::printBodies()
+void Snake::moveBodies(sf::Vector2f direction)
 {
-	for (int i = 0; i < getBodySize(); ++i)
-	{
-		Vec pos = _bodies[i];
-		Utility::printStringOnPos(_cshape, pos);
-	}
-}
-
-void Snake::moveBodies(int direction)
-{
-	if (Globals::oppositeDir[direction] == getDirection())
-	{
-		// read
-		direction = getDirection();
-	}
-
 	Vec tailPos = getBody(getBodySize() - 1);
-	Utility::printStringOnPos("  ", tailPos);
 
 	for (int i = getBodySize() - 1; i >= 1; --i)
 	{
@@ -53,9 +28,7 @@ void Snake::moveBodies(int direction)
 
 	setDirection(direction);
 	Vec curPos = getBody(0);
-	int x = curPos.x + Globals::moveXY[getDirection()].x;
-	int y = curPos.y + Globals::moveXY[getDirection()].y;
-	setBody(0, Vec(x, y));
+	setBody(0, curPos + direction * 10.0f);
 }
 
 void Snake::eatFoot(std::vector<Food>& foods)
@@ -70,11 +43,17 @@ void Snake::eatFoot(std::vector<Food>& foods)
 		for (int i = 0; i < foods.size(); ++i)
 		{
 			Vec foodPos = foods[i].getPos();
-			if (head.x == foodPos.x && head.y == foodPos.y)
+
+			
+			sf::CircleShape headShape;
+			Utility::setCircle(headShape, _shape.getRadius(), head);
+
+			if (Utility::intersects(headShape, foods[i].getShape()))
 			{
 				foodIdx = i;
 				break;
 			}
+			
 		}
 		if (foodIdx == -1)
 		{
@@ -88,24 +67,19 @@ void Snake::eatFoot(std::vector<Food>& foods)
 	}
 }
 
-bool Snake::checkDead()
+bool Snake::checkDead(const sf::CircleShape& boundingCircle)
 {
-	Vec curPos = getBody(0);
-	int x = curPos.x;
-	int y = curPos.y;
+	Vec head = getBody(0);
+	int x = head.x;
+	int y = head.y;
 
-	if (y == 0 || x == 0 || y == Globals::H - 1 || x == Globals::W - 1)
+
+	sf::CircleShape headShape;
+	Utility::setCircle(headShape, _shape.getRadius(), head);
+
+	if (Utility::intersects(headShape, boundingCircle))
 	{
 		return true;
-	}
-
-	for (int i = 1; i < getBodySize(); ++i)
-	{
-		Vec body = getBody(i);
-		if (body.x == curPos.x && body.y == curPos.y)
-		{
-			return true;
-		}
 	}
 
 	return false;
@@ -113,13 +87,11 @@ bool Snake::checkDead()
 
 void Snake::render(sf::RenderWindow& window)
 {
-	int MoveScale = 20;
-
 	for (int i = 0; i < getBodySize(); ++i)
 	{
 		Vec pos = _bodies[i];
 		
-		_shape.setPosition(pos * (float)MoveScale);
+		Utility::setCirclePos(_shape, pos);
 
 		window.draw(_shape);
 	}

@@ -4,36 +4,26 @@ using namespace sf;
 
 void World::init()
 {
-	printBoard();
-
 	_snake.init(15, 30);
+	float radius = 2000;
+
+	Utility::setCircle(_boundingCircle, radius);
+	_boundingCircle.setOutlineThickness(5);
+	_boundingCircle.setOutlineColor(sf::Color::Red);
+	_boundingCircle.setFillColor(sf::Color::Transparent);
+	_boundingCircle.setPointCount(100);
 }
 
-void World::printBoard()
+bool World::update(sf::Vector2f inputDir)
 {
-	for (int y = 0; y < Globals::H; ++y)
-	{
-		for (int x = 0; x < Globals::W; ++x)
-		{
-			if (y == 0 || x == 0 || y == Globals::H - 1 || x == Globals::W - 1)
-				std::cout << "бр";
-			else
-				std::cout << "  ";
-		}
-		std::cout << std::endl;
-	}
-}
-
-bool World::update(int inputDir)
-{
-	if (_snake.checkDead())
+	if (_snake.checkDead(_boundingCircle))
 	{
 		std::cout << "Game Over!" << std::endl;
 		return false;
 	}
 
 	genFood();
-	if (inputDir == -1)
+	if (Utility::getVectorSizeSQ(inputDir) < 0.0001f)
 	{
 		_snake.moveBodies(_snake.getDirection());
 	}
@@ -43,9 +33,10 @@ bool World::update(int inputDir)
 	}
 
 	_snake.eatFoot(_foods);
-	_snake.printBodies();
-	printFoods();
 
+	_targetViewPos = _snake.getBody(0);
+
+	
 	return true;
 }
 
@@ -57,24 +48,17 @@ void World::render(RenderWindow& window)
 	{
 		_foods[i].render(window);
 	}
+
+	window.draw(_boundingCircle);
 }
 
 void World::genFood()
 {
-	if (rand() % 10 == 0)
 	{
-		int x = rand() % (Globals::W - 2) + 1;
-		int y = rand() % (Globals::H - 2) + 1;
+		sf::Vector2f pos = Utility::randomPosInCircle(
+			Utility::getCenter(_boundingCircle), _boundingCircle.getRadius());
 
-		Food food(Vector2f(x, y));
+		Food food(pos);
 		_foods.push_back(food);
-	}
-}
-
-void World::printFoods()
-{
-	for (int i = 0; i < _foods.size(); ++i)
-	{
-		_foods[i].printBody();
 	}
 }

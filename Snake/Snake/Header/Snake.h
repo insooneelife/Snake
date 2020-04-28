@@ -9,15 +9,13 @@ class Food;
 class Snake
 {
 private:
-	int _direction;
+	sf::Vector2f _direction;
 	std::vector<sf::Vector2f> _bodies;
-	std::string _cshape;
-
 	sf::CircleShape _shape;
 
 public:
-	int getDirection() const { return _direction; }
-	void setDirection(int dir) { _direction = dir; }
+	sf::Vector2f getDirection() const { return _direction; }
+	void setDirection(sf::Vector2f dir) { _direction = dir; }
 
 	int getBodySize() const { return _bodies.size(); }
 	sf::Vector2f getBody(int i) const { return _bodies[i]; }
@@ -27,13 +25,11 @@ public:
 
 	void init(int startX, int startY);
 
-	void printBodies();
-
-	void moveBodies(int direction);
+	void moveBodies(sf::Vector2f direction);
 
 	void eatFoot(std::vector<Food>& foods);
 
-	bool checkDead();
+	bool checkDead(const sf::CircleShape& boundingCircle);
 
 
 	void render(sf::RenderWindow& window);
