@@ -18,36 +18,21 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Food.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Snake.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Source\World.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Globals.cpp">
+    <ClCompile Include="Source\Food.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header\Data.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Food.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Snake.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Utility.h">
+    <ClInclude Include="Header\Utils.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Header\World.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Globals.h">
+    <ClInclude Include="Header\Food.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

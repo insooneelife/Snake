@@ -1,98 +1,85 @@
 #include "Snake.h"
+#include "Utils.h"
 #include "Food.h"
-#include "Globals.h"
+#include <iostream>
+using namespace sf;
 
-typedef sf::Vector2f Vec;
-
-void Snake::init(int startX, int startY)
+void Snake::init(Vector2f startPos)
 {
-	_direction = sf::Vector2f(1, 0);
+	_direction = Vector2f(1, 0);
 
-	_bodies.push_back(Vec(startX, startY));
-	_bodies.push_back(Vec(startX, startY + 10));
-	_bodies.push_back(Vec(startX, startY + 20));
-	_bodies.push_back(Vec(startX, startY + 30));
+	_bodies.push_back(startPos);
+	_bodies.push_back(startPos + Vector2f(0, 20));
+	_bodies.push_back(startPos + Vector2f(0, 40));
+	_bodies.push_back(startPos + Vector2f(0, 60));
 
-	Utility::setCircle(_shape, 10.0f);
-	_shape.setFillColor(sf::Color::Black);
+	float radius = 10;
+	_circle.setRadius(radius);
+	_circle.setFillColor(Color::Black);
 }
 
-void Snake::moveBodies(sf::Vector2f direction)
+void Snake::move(Vector2f direction)
 {
-	Vec tailPos = getBody(getBodySize() - 1);
+	Vector2f tailPos = getBody(_bodies.size() - 1);
 
-	for (int i = getBodySize() - 1; i >= 1; --i)
+	for (int i = _bodies.size() - 1; i >= 1; --i)
 	{
 		setBody(i, getBody(i - 1));
 	}
 
-	setDirection(direction);
-	Vec curPos = getBody(0);
-	setBody(0, curPos + direction * 10.0f);
+	if (Utils::getVectorSizeSQ(direction) < 0.00001f)
+	{
+
+	}
+	else
+	{
+		setDirection(direction);
+	}
+	Vector2f curPos = getBody(0);
+	setBody(0, curPos + _direction * 10.0f);
 }
 
-void Snake::eatFoot(std::vector<Food>& foods)
+void Snake::draw(sf::RenderWindow& window)
 {
-	Vec head = getBody(0);
-
-	int tryNum = foods.size();
-
-	while (tryNum-- >= 0)
+	for (int i = 0; i < _bodies.size(); ++i)
 	{
-		int foodIdx = -1;
-		for (int i = 0; i < foods.size(); ++i)
-		{
-			Vec foodPos = foods[i].getPos();
+		Utils::setCirclePos(_circle, _bodies[i]);
 
-			
-			sf::CircleShape headShape;
-			Utility::setCircle(headShape, _shape.getRadius(), head);
+		window.draw(_circle);
+	}
+}
 
-			if (Utility::intersects(headShape, foods[i].getShape()))
-			{
-				foodIdx = i;
-				break;
-			}
-			
-		}
-		if (foodIdx == -1)
+void Snake::eatFood(std::vector<Food>& foods)
+{
+	Vector2f head = getBody(0);
+	
+	int foodIdx = -1;
+
+	for (int i = 0; i < foods.size(); ++i)
+	{
+		Vector2f foodPos = foods[i].getPos();
+
+		// this circle is for check collision
+		CircleShape shape;
+		shape.setRadius(_circle.getRadius());
+		Utils::setCirclePos(shape, head);
+
+		// check collision
+		if (Utils::intersects(foods[i].getShape(), shape))
 		{
+			foodIdx = i;
 			break;
 		}
-		else
-		{
-			foods.erase(foods.begin() + foodIdx);
-			addBody(getBody(getBodySize() - 1));
-		}
-	}
-}
-
-bool Snake::checkDead(const sf::CircleShape& boundingCircle)
-{
-	Vec head = getBody(0);
-	int x = head.x;
-	int y = head.y;
-
-
-	sf::CircleShape headShape;
-	Utility::setCircle(headShape, _shape.getRadius(), head);
-
-	if (Utility::intersects(headShape, boundingCircle))
-	{
-		return true;
 	}
 
-	return false;
-}
-
-void Snake::render(sf::RenderWindow& window)
-{
-	for (int i = 0; i < getBodySize(); ++i)
+	// no food found
+	if (foodIdx == -1)
 	{
-		Vec pos = _bodies[i];
-		
-		Utility::setCirclePos(_shape, pos);
-
-		window.draw(_shape);
+	}
+	// found food
+	else
+	{
+		foods.erase(foods.begin() + foodIdx);
+		_bodies.push_back(getBody(_bodies.size() - 1));
 	}
 }
