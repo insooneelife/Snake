@@ -240,10 +240,11 @@ int main()
 	Snake snake(Vector2f(200, 200));
 
 
-	for (int i = 0; i < 300; ++i)
+	for (int i = 0; i < 200; ++i)
 	{
 		// random pos
 		Food food(randomPosInCircle(circle.getPosition(), circle.getRadius()));
+
 		foods.push_back(food);
 	}
 
