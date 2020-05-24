@@ -126,13 +126,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Source\Food.cpp" />
-    <ClCompile Include="Source\Snake.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Header\Food.h" />
-    <ClInclude Include="Header\Snake.h" />
-    <ClInclude Include="Header\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
