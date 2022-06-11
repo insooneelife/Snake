@@ -7,7 +7,7 @@
 using namespace std;
 using namespace sf;
 
-const float GameWidth = 960;
+const float GameWidth = 960; 
 const float GameHeight = 640;
 const float Pi = 3.14159265358979323846f;
 
